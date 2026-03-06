@@ -1,7 +1,11 @@
 import { setCookie, getCookie } from './cookie';
 import { TIngredient, TOrder, TOrdersData, TUser } from './types';
 
+<<<<<<< HEAD
 const URL = 'https://norma.nomoreparties.space/api';
+=======
+const URL = process.env.BURGER_API_URL;
+>>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
 
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -99,6 +103,7 @@ export const getOrdersApi = () =>
     return Promise.reject(data);
   });
 
+<<<<<<< HEAD
 type TOwner = {
   name: string;
   email: string;
@@ -119,6 +124,10 @@ type TNewOrder = {
 
 type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
+=======
+type TNewOrderResponse = TServerResponse<{
+  order: TOrder;
+>>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
   name: string;
 }>;
 
