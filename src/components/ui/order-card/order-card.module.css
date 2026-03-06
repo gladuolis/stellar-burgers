@@ -64,3 +64,35 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.highlighted {
+  background-color: rgba(76, 175, 80, 0.15);
+  transition: background-color 0.5s ease;
+  border-radius: 40px;
+}
+
+.highlighted {
+  box-shadow: 0 4px 32px 0 rgba(51, 51, 255, 0.25), 0 0 8px 8px rgba(51, 51, 255, 0.25);
+  border-radius: 40px;
+  transition: box-shadow 0.5s ease;
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+/* Анимация появления и исчезновения */
+@keyframes glow {
+  0% {
+    box-shadow: 0 4px 32px 0 rgba(51, 51, 255, 0.25), 0 0 8px 8px rgba(51, 51, 255, 0.25);
+  }
+  50% {
+    box-shadow: 0 4px 32px 0 rgba(51, 51, 255, 0.4), 0 0 8px 8px rgba(51, 51, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 4px 32px 0 rgba(51, 51, 255, 0.25), 0 0 8px 8px rgba(51, 51, 255, 0.25);
+  }
+}
+
+.highlighted {
+  animation: glow 2s ease infinite;
+}
