@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { FC } from 'react';
-=======
-import { FC, useState } from 'react';
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
 import {
   Input,
   Button,
@@ -22,7 +18,6 @@ export const LoginUI: FC<LoginUIProps> = ({
 }) => (
   <main className={styles.container}>
     <div className={`pt-6 ${styles.wrapCenter}`}>
-<<<<<<< HEAD
       <h3 className="pb-6 text text_type_main-medium">Вход</h3>
       <form className={`pb-15 ${styles.form}`} name="login" onSubmit={handleSubmit}>
         <div className="pb-6">
@@ -58,66 +53,15 @@ export const LoginUI: FC<LoginUIProps> = ({
       <div className={`pb-4 ${styles.question} text text_type_main-default`}>
         Вы - новый пользователь?
         <Link to="/register" className={`pl-2 ${styles.link}`}>
-=======
-      <h3 className='pb-6 text text_type_main-medium'>Вход</h3>
-      <form
-        className={`pb-15 ${styles.form}`}
-        name='login'
-        onSubmit={handleSubmit}
-      >
-        <>
-          <div className='pb-6'>
-            <Input
-              type='email'
-              placeholder='E-mail'
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              name='email'
-              error={false}
-              errorText=''
-              size='default'
-            />
-          </div>
-          <div className='pb-6'>
-            <PasswordInput
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              name='password'
-            />
-          </div>
-          <div className={`pb-6 ${styles.button}`}>
-            <Button type='primary' size='medium' htmlType='submit'>
-              Войти
-            </Button>
-          </div>
-          {errorText && (
-            <p className={`${styles.error} text text_type_main-default pb-6`}>
-              {errorText}
-            </p>
-          )}
-        </>
-      </form>
-      <div className={`pb-4 ${styles.question} text text_type_main-default`}>
-        Вы - новый пользователь?
-        <Link to='/register' className={`pl-2 ${styles.link}`}>
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
           Зарегистрироваться
         </Link>
       </div>
       <div className={`${styles.question} text text_type_main-default pb-6`}>
         Забыли пароль?
-<<<<<<< HEAD
         <Link to="/forgot-password" className={`pl-2 ${styles.link}`}>
-=======
-        <Link to={'/forgot-password'} className={`pl-2 ${styles.link}`}>
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
           Восстановить пароль
         </Link>
       </div>
     </div>
   </main>
-<<<<<<< HEAD
 );
-=======
-);
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd

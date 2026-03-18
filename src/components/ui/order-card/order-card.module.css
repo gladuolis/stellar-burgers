@@ -64,7 +64,6 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
-<<<<<<< HEAD
 
 .highlighted {
   background-color: rgba(76, 175, 80, 0.15);
@@ -97,5 +96,3 @@
 .highlighted {
   animation: glow 2s ease infinite;
 }
-=======
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd

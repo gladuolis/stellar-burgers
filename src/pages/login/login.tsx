@@ -1,17 +1,12 @@
 import { FC, SyntheticEvent, useState } from 'react';
-<<<<<<< HEAD
 import { useNavigate, useLocation } from 'react-router-dom';
 import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { loginUser } from '../../services/slices/userSlice';
-=======
-import { LoginUI } from '@ui-pages';
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-<<<<<<< HEAD
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,16 +32,6 @@ export const Login: FC = () => {
   return (
     <LoginUI
       errorText={error || ''}
-=======
-
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-  };
-
-  return (
-    <LoginUI
-      errorText=''
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
       email={email}
       setEmail={setEmail}
       password={password}
@@ -54,8 +39,4 @@ export const Login: FC = () => {
       handleSubmit={handleSubmit}
     />
   );
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd

@@ -1,6 +1,5 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { useDispatch, useSelector } from '../../services/store';
 import { updateUser } from '../../services/slices/userSlice';
 
@@ -11,19 +10,6 @@ export const Profile: FC = () => {
   const [formValue, setFormValue] = useState({
     name: user?.name || '',
     email: user?.email || '',
-=======
-
-export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
-
-  const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
     password: ''
   });
 
@@ -42,25 +28,17 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     dispatch(updateUser({
       name: formValue.name,
       email: formValue.email
     }));
-=======
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-<<<<<<< HEAD
       name: user?.name || '',
       email: user?.email || '',
-=======
-      name: user.name,
-      email: user.email,
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
       password: ''
     });
   };
@@ -81,10 +59,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-<<<<<<< HEAD
 };
-=======
-
-  return null;
-};
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd

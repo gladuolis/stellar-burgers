@@ -22,11 +22,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     {constructorItems.bun ? (
       <div className={`${styles.element} mb-4 mr-4`}>
         <ConstructorElement
-<<<<<<< HEAD
           type="top"
-=======
-          type='top'
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
           isLocked
           text={`${constructorItems.bun.name} (верх)`}
           price={constructorItems.bun.price}
@@ -40,10 +36,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         Выберите булки
       </div>
     )}
-<<<<<<< HEAD
     
-=======
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
     <ul className={styles.elements}>
       {constructorItems.ingredients.length > 0 ? (
         constructorItems.ingredients.map(
@@ -64,18 +57,11 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         </div>
       )}
     </ul>
-<<<<<<< HEAD
     
     {constructorItems.bun ? (
       <div className={`${styles.element} mt-4 mr-4`}>
         <ConstructorElement
           type="bottom"
-=======
-    {constructorItems.bun ? (
-      <div className={`${styles.element} mt-4 mr-4`}>
-        <ConstructorElement
-          type='bottom'
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
           isLocked
           text={`${constructorItems.bun.name} (низ)`}
           price={constructorItems.bun.price}
@@ -89,7 +75,6 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         Выберите булки
       </div>
     )}
-<<<<<<< HEAD
     
     <div className={`${styles.total} mt-10 mr-4`}>
       <div className={`${styles.cost} mr-10`}>
@@ -108,43 +93,14 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
 
     {orderRequest && (
       <Modal onClose={closeOrderModal} title="Оформляем заказ...">
-=======
-    <div className={`${styles.total} mt-10 mr-4`}>
-      <div className={`${styles.cost} mr-10`}>
-        <p className={`text ${styles.text} mr-2`}>{price}</p>
-        <CurrencyIcon type='primary' />
-      </div>
-      <Button
-        htmlType='button'
-        type='primary'
-        size='large'
-        children='Оформить заказ'
-        onClick={onOrderClick}
-      />
-    </div>
-
-    {orderRequest && (
-      <Modal onClose={closeOrderModal} title={'Оформляем заказ...'}>
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
         <Preloader />
       </Modal>
     )}
 
     {orderModalData && (
-<<<<<<< HEAD
       <Modal onClose={closeOrderModal} title="">
-=======
-      <Modal
-        onClose={closeOrderModal}
-        title={orderRequest ? 'Оформляем заказ...' : ''}
-      >
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
         <OrderDetailsUI orderNumber={orderModalData.number} />
       </Modal>
     )}
   </section>
-<<<<<<< HEAD
 );
-=======
-);
->>>>>>> 3d08896f12100354fae3683441e2347453f6c0bd
