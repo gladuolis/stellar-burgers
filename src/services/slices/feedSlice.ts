@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TOrder, TOrdersData } from '@utils-types';
+import { getFeedsApi } from '../../utils/burger-api';
 
 type TFeedState = {
   orders: TOrder[];
@@ -17,32 +18,15 @@ const initialState: TFeedState = {
   error: null
 };
 
-const ORDERS_STORAGE_KEY = 'allOrders';
-
 export const getFeeds = createAsyncThunk('feed/getFeeds', async () => {
-  const savedOrders = localStorage.getItem(ORDERS_STORAGE_KEY);
-  const orders = savedOrders ? JSON.parse(savedOrders) : [];
-
-  const today = new Date().toDateString();
-  const totalToday = orders.filter(
-    (o: TOrder) => new Date(o.createdAt).toDateString() === today
-  ).length;
-
-  return {
-    orders,
-    total: orders.length,
-    totalToday
-  } as TOrdersData;
+  const data = await getFeedsApi();
+  return data;
 });
 
 const feedSlice = createSlice({
   name: 'feed',
   initialState,
-  reducers: {
-    refreshFeed: (state) => {
-      state.isLoading = true;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getFeeds.pending, (state) => {
@@ -62,5 +46,4 @@ const feedSlice = createSlice({
   }
 });
 
-export const { refreshFeed } = feedSlice.actions;
 export default feedSlice.reducer;

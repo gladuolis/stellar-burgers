@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
+import { getOrdersApi } from '../../utils/burger-api';
 
 type TProfileOrdersState = {
   orders: TOrder[];
@@ -13,33 +14,18 @@ const initialState: TProfileOrdersState = {
   error: null
 };
 
-const ORDERS_STORAGE_KEY = 'allOrders';
-
 export const getProfileOrders = createAsyncThunk(
   'profileOrders/getAll',
-  async (_, { getState }) => {
-    const state = getState() as any;
-    const userEmail = state.user.user?.email;
-
-    const savedOrders = localStorage.getItem(ORDERS_STORAGE_KEY);
-    const allOrders = savedOrders ? JSON.parse(savedOrders) : [];
-
-    const userOrders = userEmail
-      ? allOrders.filter((order: any) => order.userEmail === userEmail)
-      : [];
-
-    return userOrders;
+  async () => {
+    const data = await getOrdersApi();
+    return data;
   }
 );
 
 const profileOrdersSlice = createSlice({
   name: 'profileOrders',
   initialState,
-  reducers: {
-    refreshProfileOrders: (state) => {
-      state.isLoading = true;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getProfileOrders.pending, (state) => {
@@ -57,5 +43,4 @@ const profileOrdersSlice = createSlice({
   }
 });
 
-export const { refreshProfileOrders } = profileOrdersSlice.actions;
 export default profileOrdersSlice.reducer;

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
-import { mockIngredients } from '../../utils/mock-data';
+import { getIngredientsApi } from '../../utils/burger-api';
 
 type TIngredientsState = {
   ingredients: TIngredient[];
@@ -17,8 +17,8 @@ const initialState: TIngredientsState = {
 export const getIngredients = createAsyncThunk(
   'ingredients/getAll',
   async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return mockIngredients;
+    const data = await getIngredientsApi();
+    return data;
   }
 );
 

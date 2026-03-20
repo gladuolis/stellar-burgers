@@ -1,5 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
+import {
+  loginUserApi,
+  registerUserApi,
+  logoutApi,
+  getUserApi,
+  updateUserApi,
+  TLoginData,
+  TRegisterData
+} from '../../utils/burger-api';
+import { setCookie, deleteCookie } from '../../utils/cookie';
 
 type TUserState = {
   user: TUser | null;
@@ -18,49 +28,41 @@ const initialState: TUserState = {
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  const savedUser = localStorage.getItem('mockUser');
-  if (savedUser) {
-    return JSON.parse(savedUser);
-  }
-  throw new Error('Не авторизован');
+  const data = await getUserApi();
+  return data.user;
 });
 
 export const registerUser = createAsyncThunk(
   'user/register',
-  async ({ email, name, password }: { email: string; name: string; password: string }) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const user = { email, name };
-    localStorage.setItem('mockUser', JSON.stringify(user));
-    return user;
+  async ({ email, name, password }: TRegisterData) => {
+    const data = await registerUserApi({ email, name, password });
+    setCookie('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data.user;
   }
 );
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async ({ email, password }: { email: string; password: string }) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const user = { email, name: email.split('@')[0] };
-    localStorage.setItem('mockUser', JSON.stringify(user));
-    return user;
+  async ({ email, password }: TLoginData) => {
+    const data = await loginUserApi({ email, password });
+    setCookie('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data.user;
   }
 );
 
 export const logoutUser = createAsyncThunk('user/logout', async () => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  localStorage.removeItem('mockUser');
+  await logoutApi();
+  deleteCookie('accessToken');
+  localStorage.removeItem('refreshToken');
 });
 
 export const updateUser = createAsyncThunk(
   'user/update',
   async (userData: Partial<TUser>) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const currentUser = localStorage.getItem('mockUser');
-    if (currentUser) {
-      const updatedUser = { ...JSON.parse(currentUser), ...userData };
-      localStorage.setItem('mockUser', JSON.stringify(updatedUser));
-      return updatedUser;
-    }
-    throw new Error('Пользователь не найден');
+    const data = await updateUserApi(userData);
+    return data.user;
   }
 );
 
@@ -89,7 +91,6 @@ const userSlice = createSlice({
       })
       .addCase(getUser.rejected, (state) => {
         state.isLoading = false;
-        state.error = null;
         state.isAuthenticated = false;
         state.isInit = true;
       })
