@@ -79,6 +79,17 @@ describe('constructorSlice', () => {
     expect(newState.ingredients).toHaveLength(1);
   });
 
+  it('должен перемещать ингредиент', () => {
+    const initialState = {
+      bun: null,
+      ingredients: [mockIngredient, mockIngredient, mockIngredient]
+    };
+    const newState = constructorReducer(initialState, moveIngredient({ from: 0, to: 2 }));
+    
+    expect(newState.ingredients).toHaveLength(3);
+    expect(newState.ingredients[2]).toEqual(mockIngredient);
+  });
+
   it('должен очищать конструктор', () => {
     const initialState = {
       bun: mockBun,

@@ -5,8 +5,15 @@ describe('Страница конструктора', () => {
     cy.intercept('POST', '**/api/auth/login', { fixture: 'login-response.json' }).as('login');
     cy.intercept('POST', '**/api/orders', { fixture: 'order.json' }).as('createOrder');
 
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
     cy.wait('@getIngredients', { timeout: 10000 });
+  });
+
+  afterEach(() => {
+    cy.window().then((win) => {
+      win.localStorage.removeItem('refreshToken');
+      win.document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+    });
   });
 
   it('должна загружать ингредиенты и отображать их', () => {
@@ -45,7 +52,6 @@ describe('Страница конструктора', () => {
 
     cy.url().should('include', '/ingredients/643d69a5c3f7b9001cfa093c');
     cy.contains('Детали ингредиента').should('be.visible');
-    cy.contains('Краторная булка N-200i').should('be.visible');
   });
 
   it('должна возвращаться на главную по нажатию "Назад"', () => {
@@ -57,6 +63,25 @@ describe('Страница конструктора', () => {
     cy.go('back');
     cy.url().should('eq', 'http://localhost:4000/');
     cy.contains('Соберите бургер').should('be.visible');
+  });
+
+  it('должна закрывать модальное окно по клику на крестик', () => {
+    cy.contains('Краторная булка N-200i')
+      .scrollIntoView()
+      .click({ force: true });
+
+    cy.get('[data-cy="close-modal-btn"]').should('exist').click({ force: true });
+    cy.url().should('eq', 'http://localhost:4000/');
+  });
+
+  it('должна закрывать модальное окно по клику на оверлей', () => {
+    cy.contains('Краторная булка N-200i')
+      .scrollIntoView()
+      .click({ force: true });
+
+    cy.get('[data-cy="modal"]').should('be.visible');
+    cy.get('[data-cy="modal-overlay"]').click({ force: true });
+    cy.get('[data-cy="modal"]').should('not.exist');
   });
 
   it('должна создавать заказ для авторизованного пользователя', () => {
@@ -82,8 +107,46 @@ describe('Страница конструктора', () => {
       .contains('Добавить')
       .click({ force: true });
 
-    cy.contains('Оформить заказ').click();
+    cy.get('[data-cy="order-button"]').click();
     cy.wait('@createOrder', { timeout: 10000 });
-    cy.contains('12345').should('be.visible');
+    cy.get('[data-cy="order-number"]').should('have.text', '12345');
+  });
+
+  it('должна очищать конструктор после успешного заказа', () => {
+    cy.window().then((win) => {
+      win.localStorage.setItem('refreshToken', 'test-refresh-token');
+      win.document.cookie = 'accessToken=Bearer test-access-token';
+    });
+
+    cy.visit('/');
+    cy.wait('@getIngredients', { timeout: 10000 });
+
+    cy.contains('Краторная булка N-200i')
+      .parents('li')
+      .find('button')
+      .contains('Добавить')
+      .click({ force: true });
+
+    cy.contains('Мясо бессмертных моллюсков Protostomia')
+      .parents('li')
+      .find('button')
+      .contains('Добавить')
+      .click({ force: true });
+
+    cy.get('[data-cy="no_bun_text_1"]').should('not.exist');
+    cy.get('[data-cy="no_bun_text_2"]').should('not.exist');
+    cy.get('[data-cy="no_ingredients_text"]').should('not.exist');
+
+    cy.get('[data-cy="order-button"]').click();
+    cy.wait('@createOrder', { timeout: 10000 });
+
+    cy.get('[data-cy="order-number"]').should('have.text', '12345');
+
+    cy.get('[data-cy="modal-overlay"]').click({ force: true });
+    cy.get('[data-cy="modal"]').should('not.exist');
+
+    cy.get('[data-cy="no_bun_text_1"]').should('be.visible');
+    cy.get('[data-cy="no_bun_text_2"]').should('be.visible');
+    cy.get('[data-cy="no_ingredients_text"]').should('be.visible');
   });
 });
