@@ -17,47 +17,61 @@ describe('Страница конструктора', () => {
   });
 
   it('должна загружать ингредиенты и отображать их', () => {
-    cy.contains('Краторная булка N-200i').scrollIntoView().should('be.visible');
-    cy.contains('Мясо бессмертных моллюсков Protostomia').scrollIntoView().should('be.visible');
-    cy.contains('Соус Spicy-X').scrollIntoView().should('be.visible');
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i').scrollIntoView().should('be.visible');
+      cy.contains('Мясо бессмертных моллюсков Protostomia').scrollIntoView().should('be.visible');
+      cy.contains('Соус Spicy-X').scrollIntoView().should('be.visible');
+    });
   });
 
   it('должна добавлять булку в конструктор', () => {
-    cy.contains('Краторная булка N-200i')
-      .scrollIntoView()
-      .parents('li')
-      .find('button')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i')
+        .parents('[data-cy="ingredient-item"]')
+        .find('button')
+        .contains('Добавить')
+        .click({ force: true });
+    });
 
-    cy.contains('Краторная булка N-200i (верх)').should('be.visible');
-    cy.contains('Краторная булка N-200i (низ)').should('be.visible');
+    cy.get('[data-cy="constructor-section"]').within(() => {
+      cy.contains('Краторная булка N-200i (верх)').should('be.visible');
+      cy.contains('Краторная булка N-200i (низ)').should('be.visible');
+    });
   });
 
   it('должна добавлять начинку в конструктор', () => {
-    cy.contains('Мясо бессмертных моллюсков Protostomia')
-      .scrollIntoView()
-      .parents('li')
-      .find('button')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Мясо бессмертных моллюсков Protostomia')
+        .parents('[data-cy="ingredient-item"]')
+        .find('button')
+        .contains('Добавить')
+        .click({ force: true });
+    });
 
-    cy.contains('Мясо бессмертных моллюсков Protostomia').should('be.visible');
+    cy.get('[data-cy="constructor-section"]').within(() => {
+      cy.contains('Мясо бессмертных моллюсков Protostomia').should('be.visible');
+    });
   });
 
-  it('должна открывать страницу ингредиента по клику', () => {
-    cy.contains('Краторная булка N-200i')
-      .scrollIntoView()
-      .click({ force: true });
+  it('должна открывать страницу ингредиента по клику и отображать правильный ингредиент', () => {
+    const ingredientName = 'Краторная булка N-200i';
+    
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains(ingredientName).scrollIntoView().click({ force: true });
+    });
 
     cy.url().should('include', '/ingredients/643d69a5c3f7b9001cfa093c');
-    cy.contains('Детали ингредиента').should('be.visible');
+    
+    cy.get('[data-cy="modal"]').within(() => {
+      cy.contains('Детали ингредиента').should('be.visible');
+      cy.contains(ingredientName).should('be.visible');
+    });
   });
 
   it('должна возвращаться на главную по нажатию "Назад"', () => {
-    cy.contains('Краторная булка N-200i')
-      .scrollIntoView()
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i').scrollIntoView().click({ force: true });
+    });
 
     cy.url().should('include', '/ingredients/643d69a5c3f7b9001cfa093c');
     cy.go('back');
@@ -66,18 +80,18 @@ describe('Страница конструктора', () => {
   });
 
   it('должна закрывать модальное окно по клику на крестик', () => {
-    cy.contains('Краторная булка N-200i')
-      .scrollIntoView()
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i').scrollIntoView().click({ force: true });
+    });
 
     cy.get('[data-cy="close-modal-btn"]').should('exist').click({ force: true });
     cy.url().should('eq', 'http://localhost:4000/');
   });
 
   it('должна закрывать модальное окно по клику на оверлей', () => {
-    cy.contains('Краторная булка N-200i')
-      .scrollIntoView()
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i').scrollIntoView().click({ force: true });
+    });
 
     cy.get('[data-cy="modal"]').should('be.visible');
     cy.get('[data-cy="modal-overlay"]').click({ force: true });
@@ -93,19 +107,21 @@ describe('Страница конструктора', () => {
     cy.reload();
     cy.wait('@getIngredients', { timeout: 10000 });
 
-    cy.contains('Краторная булка N-200i')
-      .scrollIntoView()
-      .parents('li')
-      .find('button')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i')
+        .parents('[data-cy="ingredient-item"]')
+        .find('button')
+        .contains('Добавить')
+        .click({ force: true });
+    });
 
-    cy.contains('Мясо бессмертных моллюсков Protostomia')
-      .scrollIntoView()
-      .parents('li')
-      .find('button')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Мясо бессмертных моллюсков Protostomia')
+        .parents('[data-cy="ingredient-item"]')
+        .find('button')
+        .contains('Добавить')
+        .click({ force: true });
+    });
 
     cy.get('[data-cy="order-button"]').click();
     cy.wait('@createOrder', { timeout: 10000 });
@@ -121,17 +137,21 @@ describe('Страница конструктора', () => {
     cy.visit('/');
     cy.wait('@getIngredients', { timeout: 10000 });
 
-    cy.contains('Краторная булка N-200i')
-      .parents('li')
-      .find('button')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Краторная булка N-200i')
+        .parents('[data-cy="ingredient-item"]')
+        .find('button')
+        .contains('Добавить')
+        .click({ force: true });
+    });
 
-    cy.contains('Мясо бессмертных моллюсков Protostomia')
-      .parents('li')
-      .find('button')
-      .contains('Добавить')
-      .click({ force: true });
+    cy.get('[data-cy="ingredients-section"]').within(() => {
+      cy.contains('Мясо бессмертных моллюсков Protostomia')
+        .parents('[data-cy="ingredient-item"]')
+        .find('button')
+        .contains('Добавить')
+        .click({ force: true });
+    });
 
     cy.get('[data-cy="no_bun_text_1"]').should('not.exist');
     cy.get('[data-cy="no_bun_text_2"]').should('not.exist');
